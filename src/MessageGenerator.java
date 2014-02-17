@@ -18,8 +18,8 @@ public class MessageGenerator {
 			
 			while (line != null) {
 				lineSplit = line.split("\\s+",3);
-				bw.append(lineSplit[0]+","+lineSplit[0]+" "+lineSplit[1]+"\n");
-				bw.append(lineSplit[1]+","+lineSplit[0]+" "+lineSplit[1]+"\n");
+				bw.append(lineSplit[0]+"\t~ "+lineSplit[0]+" "+lineSplit[1]+"\n");
+				bw.append(lineSplit[1]+"\t~ "+lineSplit[0]+" "+lineSplit[1]+"\n");
 				line = br.readLine();
 			}
 			
