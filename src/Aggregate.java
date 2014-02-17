@@ -15,6 +15,8 @@ public class Aggregate {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 			
 			String line = br.readLine();
+			//Long backgroundVocabSize=0L, foregroundVocabSize=0L;
+			Long backgroundTotalWordCount=0L, foregroundTotalWordCount=0L;
 			
 			//UNIGRAMS
 			if(type == 0){
@@ -28,9 +30,13 @@ public class Aggregate {
 				long foregroundCount = 0;
 				if(year <= 1989){
 					backgroundCount += wordCount; 
+					//backgroundVocabSize++;
+					backgroundTotalWordCount += wordCount;
 				}
 				else{
 					foregroundCount += wordCount;
+					//foregroundVocabSize++;
+					foregroundTotalWordCount += wordCount;
 				}
 				
 				//remaining lines
@@ -48,23 +54,33 @@ public class Aggregate {
 						backgroundCount = 0;
 						foregroundCount = 0;
 						if(year <= 1989){
-							backgroundCount += wordCount; 
+							backgroundCount += wordCount;
+							//backgroundVocabSize++;
+							backgroundTotalWordCount += wordCount;
 						}
 						else{
 							foregroundCount += wordCount;
+							//foregroundVocabSize++;
+							foregroundTotalWordCount += wordCount;
 						}
 					}
 					else{
 						//keep updating counters
 						if(year <= 1989){
-							backgroundCount += wordCount; 
+							backgroundCount += wordCount;
+							backgroundTotalWordCount += wordCount;
 						}
 						else{
 							foregroundCount += wordCount;
+							foregroundTotalWordCount += wordCount;
 						}
 					}
 					line = br.readLine();
 				}
+				
+				//add vocab and word counters
+				//bw.append("!BxVocab="+String.valueOf(backgroundVocabSize)+",BxWordCount="+String.valueOf(backgroundTotalWordCount)+",CxVocab="+String.valueOf(foregroundVocabSize)+",CxWordCount="+String.valueOf(foregroundTotalWordCount));
+				bw.append("!BxWordCount="+String.valueOf(backgroundTotalWordCount)+",CxWordCount="+String.valueOf(foregroundTotalWordCount));
 			
 			}
 			// BIGRAMS
@@ -79,9 +95,13 @@ public class Aggregate {
 				long foregroundCount = 0;
 				if(year <= 1989){
 					backgroundCount += wordCount; 
+					//backgroundVocabSize++;
+					backgroundTotalWordCount += wordCount;
 				}
 				else{
 					foregroundCount += wordCount;
+					//foregroundVocabSize++;
+					foregroundTotalWordCount += wordCount;
 				}
 				
 				//remaining lines
@@ -94,30 +114,38 @@ public class Aggregate {
 					
 					//if word changed, output line and update variables
 					if( !lineSplit[1].equals(lastWords[1]) || !lineSplit[0].equals(lastWords[0]) ){
-						bw.append(lastWords[0]+" "+lastWords[1]+"\tBxy="+String.valueOf(backgroundCount)+"\tCxy="+String.valueOf(foregroundCount)+"\n");
+						bw.append(lastWords[0]+" "+lastWords[1]+",Bxy="+String.valueOf(backgroundCount)+",Cxy="+String.valueOf(foregroundCount)+"\n");
 						lastWords = new String[]{lineSplit[0],lineSplit[1]};
 						backgroundCount = 0;
 						foregroundCount = 0;
 						if(year <= 1989){
 							backgroundCount += wordCount; 
+							//backgroundVocabSize++;
+							backgroundTotalWordCount += wordCount;
 						}
 						else{
 							foregroundCount += wordCount;
+							//foregroundVocabSize++;
+							foregroundTotalWordCount += wordCount;
 						}
 					}
 					else{
 						//keep updating counters
 						if(year <= 1989){
-							backgroundCount += wordCount; 
+							backgroundCount += wordCount;
+							backgroundTotalWordCount += wordCount;
 						}
 						else{
 							foregroundCount += wordCount;
+							foregroundTotalWordCount += wordCount;
 						}
 					}
 					line = br.readLine();
 				}
 				
-				
+				//add vocab and word counters
+				//bw.append("!BxyVocab="+String.valueOf(backgroundVocabSize)+",BxyWordCount="+String.valueOf(backgroundTotalWordCount)+",CxyVocab="+String.valueOf(foregroundVocabSize)+",CxyWordCount="+String.valueOf(foregroundTotalWordCount));
+				bw.append("!BxyWordCount="+String.valueOf(backgroundTotalWordCount)+",CxyWordCount="+String.valueOf(foregroundTotalWordCount));
 			}
 			
 			bw.flush();

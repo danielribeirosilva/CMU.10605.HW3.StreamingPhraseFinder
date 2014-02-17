@@ -17,9 +17,14 @@ public class MessageGenerator {
 			String[] lineSplit;
 			
 			while (line != null) {
-				lineSplit = line.split("\\s+",3);
-				bw.append(lineSplit[0]+"\t~ "+lineSplit[0]+" "+lineSplit[1]+"\n");
-				bw.append(lineSplit[1]+"\t~ "+lineSplit[0]+" "+lineSplit[1]+"\n");
+				if(line.charAt(0)=='!'){
+					bw.append(line+"\n");
+				}
+				else{
+					lineSplit = line.split("[\\s+,]",3);
+					bw.append(lineSplit[0]+"\t~ "+lineSplit[0]+" "+lineSplit[1]+"\n");
+					bw.append(lineSplit[1]+"\t~ "+lineSplit[0]+" "+lineSplit[1]+"\n");
+				}
 				line = br.readLine();
 			}
 			

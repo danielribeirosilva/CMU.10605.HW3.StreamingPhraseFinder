@@ -13,10 +13,21 @@ public class MessageUnigramCombiner {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 			
-			String line = br.readLine();
+			String line;
 			String[] lineSplit, frequencies, terms;
 			String currentTerm;
-			long countB=0, countC=0;
+			long countB=0L, countC=0L;
+			
+			//read and throw back first two lines (word counts for unigrams and bigrams)
+			//unigram counts
+			line = br.readLine();
+			bw.append(line+"\n");
+			//bigram counts (throw away, we will get it again later)
+			line = br.readLine();
+			//bw.append(line+"\n");
+			
+			//read first terms-related line
+			line = br.readLine();
 			
 			while (line != null) {
 				lineSplit = line.split("\\t",2);
