@@ -41,10 +41,10 @@ public class MessageUnigramCombiner {
 				else{
 					terms = lineSplit[1].split("[\\s+]");
 					if(currentTerm.equals(terms[1])){
-						bw.append(terms[1]+" "+terms[2]+",Bx="+String.valueOf(countB)+",Cx="+String.valueOf(countC)+"\n");
+						bw.append(terms[1]+" "+terms[2]+",B0x="+String.valueOf(countB)+",C0x="+String.valueOf(countC)+"\n");
 					}
 					else{
-						bw.append(terms[1]+" "+terms[2]+",By="+String.valueOf(countB)+",Cy="+String.valueOf(countC)+"\n");
+						bw.append(terms[1]+" "+terms[2]+",B0y="+String.valueOf(countB)+",C0y="+String.valueOf(countC)+"\n");
 					}
 				}
 				

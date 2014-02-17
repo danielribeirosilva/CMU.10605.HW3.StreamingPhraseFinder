@@ -44,9 +44,9 @@ public class PhraseGenerator {
 	}
 	
 	public static double score(double I, double P){
-		//return I + P;
+		return I + P;
 		//return sigmoid(I) + sigmoid(P);
-		return sigmoid(I) * sigmoid(P);
+		//return sigmoid(I) * sigmoid(P);
 	}
 
 	public static void main(String[] args) {
@@ -59,8 +59,10 @@ public class PhraseGenerator {
             String line;
             String a,b;
 			String[] lineSplit;
-			long Bx=0L,By=0L,Cx=0L,Cy=0L,Bxy=0L,Cxy=0L;
-			long BxTotalWordCount,CxTotalWordCount,BxyTotalWordCount,CxyTotalWordCount; 
+			//long Bx=0L,By=0L;
+			long Cx=0L,Cy=0L,Bxy=0L,Cxy=0L;
+			//long BxTotalWordCount;
+			long CxTotalWordCount,BxyTotalWordCount,CxyTotalWordCount; 
 			double p ,q; 
 			double phraseness, informativeness, score;
             PriorityQueue<biGramData> pq = new PriorityQueue<biGramData>(); 
@@ -68,7 +70,7 @@ public class PhraseGenerator {
             //read first line with unigram word counts
             line = br.readLine();
             lineSplit = line.split("[=,]");
-            BxTotalWordCount = Long.parseLong(lineSplit[1]);
+            //BxTotalWordCount = Long.parseLong(lineSplit[1]);
             CxTotalWordCount = Long.parseLong(lineSplit[3]);
             
             //read second line with bigram word counts
@@ -77,36 +79,28 @@ public class PhraseGenerator {
             BxyTotalWordCount = Long.parseLong(lineSplit[1]);
             CxyTotalWordCount = Long.parseLong(lineSplit[3]);
             
-            //read first line of block (1/3)
+            //read first line of block (1/3) Bx/Cx
 			line = br.readLine();
 			
 			while (line != null) {
+				
 				lineSplit = line.split("[\\s,=]");
 				a = lineSplit[0];
 				b = lineSplit[1];
-				//first line has Bx and Cx info
 				//Bx = Long.parseLong(lineSplit[3]);
 				Cx = Long.parseLong(lineSplit[5]);
 				
-				//read second line of block (2/3)
+				//read second line of block (2/3) By/Cy
 				line = br.readLine();
 				lineSplit = line.split("[\\s,=]");
-				//assert(a.equals(lineSplit[0]));
-				//assert(b.equals(lineSplit[1]));
-				
-				//second line has Bxy and Cxy info
-				Bxy = Long.parseLong(lineSplit[3]);
-				Cxy = Long.parseLong(lineSplit[5]);
-				
-				//read third line of block (3/3)
-				line = br.readLine();
-				lineSplit = line.split("[\\s,=]");
-				//assert(a.equals(lineSplit[0]));
-				//assert(b.equals(lineSplit[1]));
-				
-				//third line has By and Cy info
 				//By = Long.parseLong(lineSplit[3]);
 				Cy = Long.parseLong(lineSplit[5]);
+				
+				//read third line of block (3/3) Bxy/Cxy
+				line = br.readLine();
+				lineSplit = line.split("[\\s,=]");
+				Bxy = Long.parseLong(lineSplit[3]);
+				Cxy = Long.parseLong(lineSplit[5]);
 				
 				
 				//COMPUTE SCORES
@@ -124,11 +118,12 @@ public class PhraseGenerator {
 				//final score
 				score = score(informativeness, phraseness);
 				biGramData bd = pg.new biGramData(a,b,informativeness,phraseness,score);
-				
-				pq.add(bd);
-				//only keep top K
-				if(pq.size() > K){
-					pq.poll();
+				if(pq.isEmpty() || pq.peek().score < score){
+					pq.add(bd);
+					//only keep top K
+					if(pq.size() > K){
+						pq.poll();
+					}
 				}
 				
 				//read first line of next block
